@@ -1,18 +1,22 @@
 var fs = require('fs');
 var Candidate = require('./Candidate');
-var candidates;
-
-fs.readFile('../candidates.json', function read(err, data) {
-    if (err) {
-        console.error(err);
-    }
-    candidates = JSON.parse(data);
-});
 
 module.exports.onTweet = function(callback) {
-  if (candidates) {
-    for (var i = 0; i < candidates.length; i++) {
-      Candidate.register(candidates[i], callback);
-    }
-  }
+  fs.readFile('./candidates.json', function read(err, data) {
+      if (err) {
+          console.error(err);
+      }
+      var candidates = JSON.parse(data);
+      fs.readFile('./twitter/keys.json', function read(err, data) {
+          if (err) {
+              console.error(err);
+          }
+          var keys = JSON.parse(data);
+          for(var i = 0; i < candidates.length; i++){
+            var index = Math.floor(i / 2);
+            console.log(index);
+            Candidate.register(candidates[i], keys[index], callback);
+          }
+      });
+  });
 }
