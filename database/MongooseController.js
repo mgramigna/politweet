@@ -12,7 +12,7 @@ db.once('open', function() {
 module.exports.saveTweet = function(tweet) {
     tweet.save(function(err, tweet) {
         if (err) return console.error(err);
-        console.log('Tweet saved to db');
+        console.log('Tweet Saved at: ' + tweet.tweet['created_at']);
     });
 };
 
