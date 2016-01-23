@@ -1,4 +1,4 @@
-var Twitter = require('../twitter');
+var Twitter = require('twitter');
 
 var client = new Twitter({
   consumer_key: '9k6yfIRzCCntZetQaMcJFauxm',
@@ -7,11 +7,16 @@ var client = new Twitter({
   access_token_secret: 'ATf5OfeVAWwgixJ2Z7nZjjtNXtkhTxAqXrdqps6AejJhX'
 });
 
-client.stream('statuses/filter', {track: 'happy'},  function(stream){
-  stream.on('data', function(tweet) {
-    console.log(tweet.text);
+var register = function(candidate, callback) {
+  client.stream('statuses/filter', {track: candidate},  function(stream){
+    stream.on('data', function(tweet) {
+      console.log(tweet.text);
+      callback({candidate: candidate, tweet: tweet});
+    });
+    stream.on('error', function(error) {
+      console.error(error);
+    });
   });
-  stream.on('error', function(error) {
-    console.error(error);
-  });
-});
+}
+
+modules.exports = register;
