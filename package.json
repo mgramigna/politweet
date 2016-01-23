@@ -21,6 +21,8 @@
     "express": "^4.13.4",
     "mongoose": "^4.3.6",
     "socket.io": "^1.4.4",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "indico.io": "~0.6.0",
+    "cron": "~1.1.0"
   }
 }
