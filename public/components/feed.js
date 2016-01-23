@@ -23,9 +23,9 @@ var tweetStore = {}
 socket.on('tweet', function(tweet) {
   if (tweetStore.hasOwnProperty(tweet.candidate)) {
     if (tweetStore[tweet.candidate].length >= 5) {
-        tweetStore[tweet.candidate].shift()
+        tweetStore[tweet.candidate].pop()
     }
-    tweetStore[tweet.candidate].push(tweet)
+    tweetStore[tweet.candidate].unshift(tweet)
   }
   else {
     tweetStore[tweet.candidate] = [tweet]
@@ -64,6 +64,7 @@ var TweetList = React.createClass({
     }
     var scrollStyle = {
       height: '200px',
+      overflow: 'scroll'
     }
     return (
       <div style={listStyle}>
