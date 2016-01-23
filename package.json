@@ -18,11 +18,12 @@
   "homepage": "https://github.com/mgramigna/presidential-live-tweets#readme",
   "dependencies": {
     "async": "^1.5.2",
+    "cron": "~1.1.0",
     "express": "^4.13.4",
-    "mongoose": "^4.3.6",
-    "socket.io": "^1.4.4",
-    "twitter": "^1.2.5",
     "indico.io": "~0.6.0",
-    "cron": "~1.1.0"
+    "mongoose": "^4.3.6",
+    "react": "^0.14.6",
+    "socket.io": "^1.4.4",
+    "twitter": "^1.2.5"
   }
 }

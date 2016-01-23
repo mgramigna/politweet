@@ -1,0 +1,16 @@
+/*@-webkit-keyframes fadein { from { opacity: 0;} to {opacity: 1;}}
+.tweets > div:first-child blockquote {
+  opacity: 0;
+  -webkit-animation: fadein 1s;
+  -webkit-animation-fill-mode: forwards;
+  background-color: red;
+}*/
+
+.tweet-enter {
+  opacity: 0.01;
+}
+
+.tweet-enter.tweet-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
