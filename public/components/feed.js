@@ -1,15 +1,3 @@
-var event = new Event('tweet');
-
-var data = [
-  "This is a tweet.",
-  "This is another tweet.",
-  "This is a third tweet.",
-  "These are kind of boring tweets with no #hashtags.",
-  "Also they all end in periods",
-  "sdblj hjhbhjkb h hvhvjk kvhj kv v jvkv",
-  "kkhv hkv hv hkv hv hjv hv h vh v."
-]
-
 
 var socket = io.connect(location.host);
 var tweetStore = {}
@@ -46,7 +34,8 @@ var TweetList = React.createClass({
   render: function() {
     var listStyle = {
       border: '2px solid #73AD21',
-      width: '500px'
+      width: '500px',
+      margin: '10px'
     }
     var headingStyle = {
       fontFamily: 'verdana',
@@ -57,11 +46,11 @@ var TweetList = React.createClass({
     }
     var scrollStyle = {
       height: '200px',
-      overflow: 'scroll'
+      overflow: 'hidden'
     }
     return (
       <div style={listStyle}>
-        <h2 style={headingStyle}>{this.props.data[0].candidate}</h2>
+        <h2 style={headingStyle}>{this.props.title}</h2>
         <div style={scrollStyle}>
           {this.renderTweetRows()}
         </div>
@@ -71,6 +60,7 @@ var TweetList = React.createClass({
   renderTweetRows: function() {
     var tweetRows = [];
     for (var i = 0; i < this.props.data.length; i++) {
+      console.log(this);
       tweetRows.push(<Tweet key={i} text={this.props.data[i].tweet.text} />)
     }
     return tweetRows
@@ -83,7 +73,8 @@ var TweetListContainer = React.createClass({
     var self = this;
     $.ajax('/init', {
       success: function(data) {
-        console.log("Hello world");
+        console.log(data);
+        tweetStore = data;
         self.setState({tweetStore: data});
       },
       error: function() {
@@ -100,27 +91,43 @@ var TweetListContainer = React.createClass({
   },
 
   render: function() {
-    var ts = this.state.tweetStore;
-    if (ts == undefined) {
-      return <div />
+    var boxStyle = {
+      padding: '20px'
     }
-    else {
-      return (<div>
-        {this._renderTweetLists()}
-      </div>)
+
+    var leftStyle ={
+      left: '5%',
+      position: 'relative',
+      float: 'left',
+      display: 'inline-block'
     }
-  },
-  _renderTweetLists: function() {
-    var tweetLists = [];
-    var ts = this.state.tweetStore
-    for(var candidate in ts) {
-      tweetLists.push(<TweetList key={candidate} data={ts[candidate]} />)
+    var rightStyle = {
+      right: '5%',
+      position: 'relative',
+      float: 'right',
+      display: 'inline-block'
     }
-    return tweetLists;
+
+    if (!this.state.tweetStore) {
+      return(<p>Hello</p>);
+    } else {
+      return (
+        <div>
+          <div style={leftStyle}>
+            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} />
+            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} />
+          </div>
+          <div style={rightStyle}>
+            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} />
+            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} />
+          </div>
+        </div>
+      );
+    }
   }
 })
 
 var tweetListContainer = ReactDOM.render(
-  <TweetListContainer data={data} />,
+  <TweetListContainer />,
   document.getElementById('container')
 );
