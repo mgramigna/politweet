@@ -20,7 +20,7 @@ fs.readFile('./candidates.json', function read(err, data) {
   candidates = JSON.parse(data);
   candidates.forEach(function(candidate){
     asyncObject[candidate.name] = function(callback){
-      db.getTweetsByCandidate(candidate.name, 1, function(tweets){
+      db.getTweetsByCandidate(candidate.name, 3, function(tweets){
         callback(null, tweets);
       });
     };

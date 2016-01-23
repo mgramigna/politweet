@@ -9,14 +9,7 @@ var data = [
   "sdblj hjhbhjkb h hvhvjk kvhj kv v jvkv",
   "kkhv hkv hv hkv hv hjv hv h vh v."
 ]
-$.ajax('/init', {
-  success: function(data) {
-    console.log(data);
-  },
-  error: function() {
 
-  }
-});
 
 var socket = io.connect(location.host);
 var tweetStore = {}
@@ -68,7 +61,7 @@ var TweetList = React.createClass({
     }
     return (
       <div style={listStyle}>
-        <h2 style={headingStyle}>Donald Trump</h2>
+        <h2 style={headingStyle}>{this.props.data[0].candidate}</h2>
         <div style={scrollStyle}>
           {this.renderTweetRows()}
         </div>
@@ -86,6 +79,18 @@ var TweetList = React.createClass({
 
 var TweetListContainer = React.createClass({
 
+  componentWillMount: function() {
+    var self = this;
+    $.ajax('/init', {
+      success: function(data) {
+        console.log("Hello world");
+        self.setState({tweetStore: data});
+      },
+      error: function() {
+
+      }
+    });
+  },
   getInitialState: function() {
     return {}
   },
@@ -100,10 +105,18 @@ var TweetListContainer = React.createClass({
       return <div />
     }
     else {
-      for(var candidate in ts) {
-        return <TweetList data={ts[candidate]} />
-      }
+      return (<div>
+        {this._renderTweetLists()}
+      </div>)
     }
+  },
+  _renderTweetLists: function() {
+    var tweetLists = [];
+    var ts = this.state.tweetStore
+    for(var candidate in ts) {
+      tweetLists.push(<TweetList key={candidate} data={ts[candidate]} />)
+    }
+    return tweetLists;
   }
 })
 
