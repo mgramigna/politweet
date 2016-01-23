@@ -3,11 +3,20 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 async = require('async');
+var fs = require('fs');
 
 var twitter = require('./twitter/Twitter');
 var db = require('./database/MongooseController');
 var Tweet = require('./database/schemas/tweet');
+
+//Get Candidates List
 var candidates = [];
+fs.readFile('./twitter/keys.json', function read(err, data) {
+  if (err) {
+    console.error(err);
+  }
+  candidates = JSON.parse(data);
+});
 
 //Serve Client
 app.use(express.static(__dirname + '/public'));
