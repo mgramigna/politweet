@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var Tweet = require('./schemas/tweet');
 var Sentiment = require('./schemas/Sentiment');
 var State = require('./schemas/State');
+var Tweet = require('./schemas/Tweet');
 
 mongoose.connect('mongodb://localhost/tweets');
 var db = mongoose.connection;
@@ -14,7 +14,7 @@ db.once('open', function() {
 module.exports.saveTweet = function(tweet) {
     tweet.save(function(err, tweet) {
         if (err) return console.error(err);
-        console.log('Tweet saved to db');
+        console.log('Tweet Saved at: ' + tweet.tweet['created_at']);
     });
 };
 
