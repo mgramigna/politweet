@@ -10,6 +10,8 @@ var twitter = require('./twitter/Twitter');
 var db = require('./database/MongooseController');
 var Tweet = require('./database/schemas/Tweet');
 var indico = require('./indico/IndicoController');
+var Sentiment = require('./database/schemas/Sentiment');
+
 
 //Get Candidates List and Make asyncObject
 var candidates = [];
@@ -45,16 +47,18 @@ app.get('/init', function(req, res){
 
 //Sentiment Data via GET
 app.get('/sentiments', function(req, res){
-  var now = Date.now();
-  db.getAllSentimentsSince(now.setDate(now.getDate() - 1), function(sentiments){
+  var d = new Date();
+  d.setDate(d.getDate() - 2);
+  db.getAllSentimentsSince(d, function(sentiments){
     res.json(sentiments);
   });
 });
 
 //State Sentiment Data via GET
 app.get('/states', function(req, res){
-  var now = Date.now();
-  db.getAllStateSentimentsSince(now.setDate(now.getDate() - 1), function(sentiments){
+  var d = new Date();
+  d.setDate(d.getDate() - 2);
+  db.getAllStateSentimentsSince(d, function(sentiments){
     res.json(sentiments);
   });
 });
@@ -85,17 +89,46 @@ server.listen(3000, function() {
 
 
 //Cron Job Changing the Sentiments every 5 minutes
-var job = new CronJob('0 */5 * * * *',
-  Calculate, //Job
+
+var job = new CronJob('0 */1 * * * *',
+  function(){
+    var d = new Date();
+    d.setMinutes(d.getMinutes() - 1);
+    db.getAllTweetsSince(d, function(tweets){
+      var asyncSentiment = {};
+      candidates.forEach(function(candidate){
+        var list = [];
+        tweets.forEach(function(tweet){
+          if(tweet.candidate === candidate.name){
+            list.push(tweet.tweet.text);
+          }
+        });
+        asyncSentiment[candidate.name] = function(callback){
+          indico.getSentiment(list, function(sentiment){
+            callback(null, sentiment);
+          });
+        };
+      });
+      async.series(asyncSentiment, function(err, response){
+        var now = new Date();
+        var newSentiment = {
+          data: {
+            candidates: response,
+            party: {
+              dem: 0.0,
+              rep: 0.0
+            }
+          },
+          date: now
+        };
+        users.forEach(function(user){
+          user.volatile.emit('newSentiment', newSentiment);
+        });
+        db.saveSentiment(new Sentiment(newSentiment));
+      });
+    });
+  }, //Job
   function () {}, //After Job
   true, /* Start the job right now */
   'America/New_York' //TimeZone
 );
-
-var Calculate = function(){
-  console.log('job executed');
-};
-//Test
-// indico.getSentiment(['positive', 'happy'], function(sentiment){
-//   console.log(sentiment);
-// });

@@ -14,8 +14,17 @@ db.once('open', function() {
 module.exports.saveTweet = function(tweet) {
     tweet.save(function(err, tweet) {
         if (err) return console.error(err);
-        console.log('Tweet Saved at: ' + tweet.tweet['created_at']);
+        //console.log('Tweet Saved at: ' + tweet.tweet['created_at']);
     });
+};
+
+module.exports.getAllTweetsSince = function(date, callback) {
+  Tweet.find({
+    'date': {$gte: date}
+  }).exec(function(err, tweets){
+    if (err) return console.error(err);
+    callback(tweets);
+  });
 };
 
 module.exports.getTweetsByCandidate = function(candidate, num, callback) {
@@ -68,7 +77,7 @@ module.exports.deleteTweet = function(tweetId) {
 module.exports.saveSentiment = function(sentiment) {
     sentiment.save(function(err, sentiment){
       if (err) return console.error(err);
-      console.log('Tweet saved to db');
+      console.log('Sentiment Saved');
     });
 };
 
@@ -82,7 +91,7 @@ module.exports.getAllSentimentsSince = function(date, callback){
 module.exports.saveState = function(state) {
     state.save(function(err, state){
       if (err) return console.error(err);
-      console.log('Tweet saved to db');
+      console.log('State Data saved');
     });
 };
 
