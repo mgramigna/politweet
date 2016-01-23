@@ -1,4 +1,4 @@
-
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var socket = io.connect(location.host);
 var tweetStore = {}
 socket.on('tweet', function(tweet) {
@@ -52,7 +52,7 @@ var Tweet = React.createClass({
      paddingLeft: '16px',
      verticalAlign: 'center',
 
-     backgroundColor: 'white',
+     //backgroundColor: 'white',
 
      fontFamily: 'Verdana',
      color: '#7f8c8d ',
@@ -118,8 +118,10 @@ var TweetList = React.createClass({
     return (
       <div style={listStyle}>
         <h2 style={headingStyle}>{this.props.title}</h2>
-        <div style={scrollStyle}>
+        <div className="tweets" style={scrollStyle} >
+        <ReactCSSTransitionGroup transitionName="tweet" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {this.renderTweetRows()}
+        </ReactCSSTransitionGroup>
         </div>
       </div>
     );
@@ -128,9 +130,7 @@ var TweetList = React.createClass({
     var tweetRows = [];
     for (var i = 0; i < this.props.data.length; i++) {
       var tweet = this.props.data[i].tweet;
-      console.log(tweet);
-      console.log(tweet.retweet_count);
-      tweetRows.push(<Tweet key={i} text={tweet.text} favorite={tweet.favorite_count} retweet={tweet.retweet_count} name={tweet.user.name} screenName={tweet.user.screen_name} image={tweet.user.profile_image_url_https}/>)
+      tweetRows.push(<Tweet key={tweet.id} text={tweet.text} favorite={tweet.favorite_count} retweet={tweet.retweet_count} name={tweet.user.name} screenName={tweet.user.screen_name} image={tweet.user.profile_image_url_https}/>)
     }
     return tweetRows
   }
@@ -142,7 +142,6 @@ var TweetListContainer = React.createClass({
     var self = this;
     $.ajax('/init', {
       success: function(data) {
-        console.log(data);
         tweetStore = data;
         self.setState({tweetStore: data});
       },
