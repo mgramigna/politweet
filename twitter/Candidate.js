@@ -7,10 +7,9 @@ var client = new Twitter({
   access_token_secret: 'ATf5OfeVAWwgixJ2Z7nZjjtNXtkhTxAqXrdqps6AejJhX'
 });
 
-var register = function(candidate, callback) {
+module.exports.register = function(candidate, callback) {
   client.stream('statuses/filter', {track: candidate},  function(stream){
     stream.on('data', function(tweet) {
-      console.log(tweet.text);
       callback({candidate: candidate, tweet: tweet});
     });
     stream.on('error', function(error) {
@@ -18,5 +17,3 @@ var register = function(candidate, callback) {
     });
   });
 }
-
-modules.exports = register;
