@@ -8,28 +8,29 @@ var fs = require('fs');
 var twitter = require('./twitter/Twitter');
 var db = require('./database/MongooseController');
 var Tweet = require('./database/schemas/tweet');
+var indico = require('./indico/IndicoController');
 
-//Get Candidates List
+//Get Candidates List and Make asyncObject
 var candidates = [];
-fs.readFile('./twitter/keys.json', function read(err, data) {
+var asyncObject = {};
+fs.readFile('./candidates.json', function read(err, data) {
   if (err) {
     console.error(err);
   }
   candidates = JSON.parse(data);
+  candidates.forEach(function(candidate){
+    asyncObject[candidate.name] = function(callback){
+      db.getTweetsByCandidate(candidate.name, 1, function(tweets){
+        callback(null, tweets);
+      });
+    };
+  });
 });
 
 //Serve Client
 app.use(express.static(__dirname + '/public'));
 
 //Initial Database Query on GET
-var asyncObject = {};
-candidates.forEach(function(candidate){
-  asyncObject[candidate.name] = function(callback){
-    db.getTweetsByCandidate(candidate.name, 1, function(tweets){
-      callback(null, tweets);
-    });
-  };
-});
 app.get('/init', function(req, res){
   async.series(asyncObject, function(err, response){
     res.json(response);

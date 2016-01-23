@@ -19,7 +19,7 @@ module.exports.saveTweet = function(tweet) {
 module.exports.getTweetsByCandidate = function(candidate, num, callback) {
     Tweet.find({
         'candidate': candidate
-    }).limit(num).exec(function(err, tweets) {
+    }).limit(num).select('tweet').exec(function(err, tweets) {
         if (err) return console.error(err);
         callback(tweets);
     });
@@ -28,7 +28,7 @@ module.exports.getTweetsByCandidate = function(candidate, num, callback) {
 module.exports.getTweetsByParty = function(party, num, callback) {
     Tweet.find({
         'party': party
-    }).limit(num).exec(function(err, tweets) {
+    }).limit(num).select('candidate tweet').exec(function(err, tweets) {
         if (err) return console.error(err);
         callback(tweets);
     });
