@@ -14,20 +14,61 @@ socket.on('tweet', function(tweet) {
   // Push the store to the TweetListContainer
   tweetListContainer._onUpdateTweets(tweetStore)
 
-})
+});
 
 
 var Tweet = React.createClass({
-  render: function() {
-    var tweetStyle = {
-      fontFamily: 'verdana',
-      fontSize: '12px',
-      margin: '16px'
-    };
-    return (
-      <p style={tweetStyle}>{this.props.text}</p>
-    );
-  }
+ render: function() {
+   var mailIcon = {
+     paddingLeft:'180px',
+     paddingRight: '5px'
+   }
+   var otherIcon = {
+     paddingLeft: '10px',
+     paddingRight: '3px',
+   }
+   var paragraph = {
+     verticalAlign: 'textTop',
+     fontSize: '16px',
+     fontWeight: 'normal'
+     //lineHeight: '16px'
+   }
+   var outLine ={
+     display: 'inlineBlock',
+     fontSize: '12px',
+     fontWeight: 'bold',
+     lineHeight: '16px',
+     borderColor: '#eee',
+     borderRadius: '5px',
+     borderStyle: 'solid',
+     borderWidth: '1px',
+     marginLeft: '10px',
+     marginRight: '5px',
+     paddingRight: '16px',
+     paddingLeft: '16px',
+     paddingBottom: '16px',
+     width: '468px',
+     backgroundColor: 'white',
+     verticalAlign: 'textTop',
+
+     fontFamily: 'Quicksand',
+     color: '#7f8c8d ',
+   }
+
+
+
+   return (
+     <div>
+       <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
+       <blockquote style={outLine} className="twitter-tweet">
+         <p style={paragraph}>{this.props.text}</p>
+         —{this.props.name} (@{this.props.screenName}) May 21, 2006
+         <div style={otherIcon} className="icon-retweet action" />{this.props.retweet}
+         <div style={otherIcon} className="icon-star" />{this.props.favorite}
+       </blockquote>
+     </div>
+   );
+ }
 });
 
 var TweetList = React.createClass({
@@ -60,8 +101,10 @@ var TweetList = React.createClass({
   renderTweetRows: function() {
     var tweetRows = [];
     for (var i = 0; i < this.props.data.length; i++) {
-      console.log(this);
-      tweetRows.push(<Tweet key={i} text={this.props.data[i].tweet.text} />)
+      var tweet = this.props.data[i].tweet;
+      console.log(tweet);
+      console.log(tweet.retweet_count);
+      tweetRows.push(<Tweet key={i} text={tweet.text} favorite={tweet.favorite_count} retweet={tweet.retweet_count} name={tweet.user.name} screenName={tweet.user.screen_name}/>)
     }
     return tweetRows
   }
