@@ -14,3 +14,7 @@
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
+
+#mapImg:hover {
+  cursor: pointer;
+}

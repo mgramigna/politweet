@@ -15,12 +15,17 @@
 
 </head>
 <body>
-  <h1>My First Heading</h1>
-  <input id="stateButton" type="button" value="View State Data" />
+  <div class="container">
+  <img src="http://2.bp.blogspot.com/-miAmF06dDKc/ULoyeJd9gXI/AAAAAAAAAKg/xN763RkmdUQ/s1600/Map_pin.png" style="width: 50px" id="mapImg"/>
   <div id="container"></div>
   <div id="container2"></div>
 
   <script type="text/babel" src="components/feed.js"></script>
   <script type="text/javascript" src="stateDataScript.js"></script>
+  <script>
+    $('#mapImg').on('click', function(evt) {
+      alert('tests')
+    })
+  </script>
 </body>
 </html>
