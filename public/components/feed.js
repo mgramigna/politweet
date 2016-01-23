@@ -87,16 +87,22 @@ var Tweet = React.createClass({
 var TweetList = React.createClass({
   render: function() {
     var listStyle = {
-      border: '2px solid #73AD21',
       width: '500px',
       margin: '10px'
     }
     var headingStyle = {
       fontFamily: 'verdana',
-      backgroundColor: '#73AD21',
       margin: '0px',
       textAlign: 'center',
-      padding: '10px'
+      padding: '10px',
+      color: 'white'
+    }
+    if (this.props.party == 'democratic') {
+      headingStyle.backgroundColor = '#000099'
+      listStyle.border = '2px solid #000099'
+    } else {
+      headingStyle.backgroundColor = '#990000'
+      listStyle.border = '2px solid #990000'
     }
     var scrollStyle = {
       height: '300px',
@@ -170,12 +176,12 @@ var TweetListContainer = React.createClass({
       return (
         <div>
           <div style={leftStyle}>
-            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} />
-            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} />
+            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} />
+            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} />
           </div>
           <div style={rightStyle}>
-            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} />
-            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} />
+            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} />
+            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} />
           </div>
         </div>
       );
