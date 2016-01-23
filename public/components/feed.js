@@ -24,6 +24,7 @@ socket.on('tweet', function(tweet) {
   }
   // Push the store to the TweetListContainer
   tweetListContainer._onUpdateTweets(tweetStore)
+
 })
 
 
@@ -80,7 +81,7 @@ var TweetListContainer = React.createClass({
   },
 
   _onUpdateTweets: function(tweetStore) {
-      this.setState(tweetStore)
+      this.setState({tweetStore: tweetStore});
   },
 
   render: function() {
@@ -89,8 +90,8 @@ var TweetListContainer = React.createClass({
       return <div />
     }
     else {
-      for (var candidate in ts) {
-        return <TweetList data={candidate} />
+      for(var candidate in ts) {
+        return <TweetList data={ts[candidate]} />
       }
     }
   }
