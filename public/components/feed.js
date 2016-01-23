@@ -9,6 +9,14 @@ var data = [
   "sdblj hjhbhjkb h hvhvjk kvhj kv v jvkv",
   "kkhv hkv hv hkv hv hjv hv h vh v."
 ]
+$.ajax('/init', {
+  success: function(data) {
+    console.log(data);
+  },
+  error: function() {
+
+  }
+});
 
 var socket = io.connect(location.host);
 var tweetStore = {}
@@ -32,6 +40,7 @@ var Tweet = React.createClass({
   render: function() {
     var tweetStyle = {
       fontFamily: 'verdana',
+      fontSize: '12px',
       margin: '16px'
     };
     return (
@@ -44,7 +53,7 @@ var TweetList = React.createClass({
   render: function() {
     var listStyle = {
       border: '2px solid #73AD21',
-      width: '300px'
+      width: '500px'
     }
     var headingStyle = {
       fontFamily: 'verdana',
@@ -54,7 +63,6 @@ var TweetList = React.createClass({
       padding: '10px'
     }
     var scrollStyle = {
-      overflow: 'hidden',
       height: '200px',
     }
     return (
@@ -71,6 +79,7 @@ var TweetList = React.createClass({
     for (var i = 0; i < this.props.data.length; i++) {
       tweetRows.push(<Tweet key={i} text={this.props.data[i].tweet.text} />)
     }
+    return tweetRows
   }
 });
 
