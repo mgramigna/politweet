@@ -1,3 +1,18 @@
 [
-  "marco rubio"
+  {
+    "name": "donald trump",
+    "party": "republican"
+  },
+  {
+    "name": "marco rubio",
+    "party": "republican"
+  },
+  {
+    "name": "hillary clinton",
+    "party": "democratic"
+  },
+  {
+    "name": "bernie sanders",
+    "party": "democratic"
+  }
 ]
