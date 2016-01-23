@@ -31,7 +31,7 @@ module.exports.getTweetsByParty = function(party, num, callback) {
 };
 
 module.exports.deleteTweet = function(tweetId) {
-	Tweet.remove({'_id': tweetId}, function(err) {
+	Tweet.remove({'tweet.id': tweetId}, function(err) {
 		if(err) return console.error(err);
 		console.log('Tweet deleted from db');
 	});
