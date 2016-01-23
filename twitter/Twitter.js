@@ -14,7 +14,6 @@ module.exports.onTweet = function(callback) {
           var keys = JSON.parse(data);
           for(var i = 0; i < candidates.length; i++){
             var index = Math.floor(i / 2);
-            console.log(index);
             Candidate.register(candidates[i], keys[index], callback);
           }
       });
