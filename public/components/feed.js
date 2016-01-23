@@ -14,20 +14,74 @@ socket.on('tweet', function(tweet) {
   // Push the store to the TweetListContainer
   tweetListContainer._onUpdateTweets(tweetStore)
 
-})
+});
 
 
 var Tweet = React.createClass({
-  render: function() {
-    var tweetStyle = {
-      fontFamily: 'verdana',
-      fontSize: '12px',
-      margin: '16px'
-    };
-    return (
-      <p style={tweetStyle}>{this.props.text}</p>
-    );
-  }
+ render: function() {
+   var mailIcon = {
+     paddingLeft:'180px',
+     paddingRight: '5px'
+   }
+   var otherIcon = {
+     paddingLeft: '10px',
+     paddingRight: '3px',
+   }
+   var paragraph = {
+     verticalAlign: 'textTop',
+     fontSize: '12px',
+     fontWeight: 'normal'
+     //lineHeight: '16px'
+   }
+   var outLine ={
+     display: 'inlineBlock',
+     fontSize: '10px',
+     fontWeight: 'bold',
+     lineHeight: '16px',
+     borderColor: '#eee',
+     borderRadius: '5px',
+     borderStyle: 'solid',
+     borderWidth: '1px',
+     marginLeft: '10px',
+     marginRight: '5px',
+     paddingRight: '16px',
+     paddingLeft: '16px',
+     paddingBottom: '16px',
+
+     backgroundColor: 'white',
+     verticalAlign: 'textTop',
+
+     fontFamily: 'Verdana',
+     color: '#7f8c8d ',
+   }
+
+   var avatarStyle = {
+     width: '50px',
+     height: '50px',
+     position: 'relative',
+     display: 'inline-block',
+     float: 'left',
+     marginRight: '10px',
+     borderRadius: '50%'
+   }
+
+   return (
+     <div>
+       <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
+
+       <blockquote style={outLine} className="twitter-tweet">
+
+       <div>
+       <img style={avatarStyle} src={this.props.image}/>
+           <p style={paragraph}>{this.props.text}</p>
+           —{this.props.name} (@{this.props.screenName}) May 21, 2006
+           <div style={otherIcon} className="icon-retweet action" />{this.props.retweet}
+           <div style={otherIcon} className="icon-star" />{this.props.favorite}
+         </div>
+       </blockquote>
+     </div>
+   );
+ }
 });
 
 var TweetList = React.createClass({
@@ -45,7 +99,7 @@ var TweetList = React.createClass({
       padding: '10px'
     }
     var scrollStyle = {
-      height: '200px',
+      height: '300px',
       overflow: 'hidden'
     }
     return (
@@ -60,8 +114,10 @@ var TweetList = React.createClass({
   renderTweetRows: function() {
     var tweetRows = [];
     for (var i = 0; i < this.props.data.length; i++) {
-      console.log(this);
-      tweetRows.push(<Tweet key={i} text={this.props.data[i].tweet.text} />)
+      var tweet = this.props.data[i].tweet;
+      console.log(tweet);
+      console.log(tweet.retweet_count);
+      tweetRows.push(<Tweet key={i} text={tweet.text} favorite={tweet.favorite_count} retweet={tweet.retweet_count} name={tweet.user.name} screenName={tweet.user.screen_name} image={tweet.user.profile_image_url_https}/>)
     }
     return tweetRows
   }
