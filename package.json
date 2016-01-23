@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mgramigna/presidential-live-tweets#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "socket.io": "^1.4.4"
   }
 }
