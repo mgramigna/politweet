@@ -1,3 +1,5 @@
+var event = new Event('tweet');
+
 var data = [
   "This is a tweet.",
   "This is another tweet.",
@@ -7,6 +9,23 @@ var data = [
   "sdblj hjhbhjkb h hvhvjk kvhj kv v jvkv",
   "kkhv hkv hv hkv hv hjv hv h vh v."
 ]
+
+var socket = io.connect(location.host);
+var tweetStore = {}
+socket.on('tweet', function(tweet) {
+  if (tweetStore.hasOwnProperty(tweet.candidate)) {
+    if (tweetStore[tweet.candidate].length >= 5) {
+        tweetStore[tweet.candidate].shift()
+    }
+    tweetStore[tweet.candidate].push(tweet)
+  }
+  else {
+    tweetStore[tweet.candidate] = [tweet]
+  }
+  // Push the store to the TweetListContainer
+  tweetListContainer._onUpdateTweets(tweetStore)
+})
+
 
 var Tweet = React.createClass({
   render: function() {
@@ -37,21 +56,47 @@ var TweetList = React.createClass({
       overflow: 'hidden',
       height: '200px',
     }
-    var tweetRows = [];
-    for (var i = 0; i < this.props.data.length; i++) {
-      tweetRows.push(<Tweet key={i} text={this.props.data[i]} />)
-    }
     return (
       <div style={listStyle}>
         <h2 style={headingStyle}>Donald Trump</h2>
         <div style={scrollStyle}>
-          {tweetRows}
+          {this.renderTweetRows()}
         </div>
       </div>
     );
+  },
+  renderTweetRows: function() {
+    var tweetRows = [];
+    for (var i = 0; i < this.props.data.length; i++) {
+      tweetRows.push(<Tweet key={i} text={this.props.data[i].tweet.text} />)
+    }
   }
 });
-ReactDOM.render(
-  <TweetList data={data} />,
+
+var TweetListContainer = React.createClass({
+
+  getInitialState: function() {
+    return {}
+  },
+
+  _onUpdateTweets: function(tweetStore) {
+      this.setState(tweetStore)
+  },
+
+  render: function() {
+    var ts = this.state.tweetStore;
+    if (ts == undefined) {
+      return <div />
+    }
+    else {
+      for (var candidate in ts) {
+        return <TweetList data={candidate} />
+      }
+    }
+  }
+})
+
+var tweetListContainer = ReactDOM.render(
+  <TweetListContainer data={data} />,
   document.getElementById('container')
 );
