@@ -7,7 +7,7 @@ var fs = require('fs');
 
 var twitter = require('./twitter/Twitter');
 var db = require('./database/MongooseController');
-var Tweet = require('./database/schemas/tweet');
+var Tweet = require('./database/schemas/Tweet');
 var indico = require('./indico/IndicoController');
 
 //Get Candidates List and Make asyncObject

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Tweet = require('./schemas/tweet');
+var Tweet = require('./schemas/Tweet');
 
 mongoose.connect('mongodb://localhost/tweets');
 var db = mongoose.connection;
