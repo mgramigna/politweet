@@ -28,28 +28,31 @@ var Tweet = React.createClass({
      paddingRight: '3px',
    }
    var paragraph = {
-     verticalAlign: 'textTop',
      fontSize: '12px',
-     fontWeight: 'normal'
+     fontWeight: 'normal',
+     marginTop: '5px',
+     marginBottom: '20px'
      //lineHeight: '16px'
    }
    var outLine ={
      display: 'inlineBlock',
-     fontSize: '10px',
+     fontSize: '14px',
      fontWeight: 'bold',
      lineHeight: '16px',
      borderColor: '#eee',
      borderRadius: '5px',
      borderStyle: 'solid',
      borderWidth: '1px',
-     marginLeft: '10px',
+     marginLeft: '5px',
      marginRight: '5px',
+     marginTop: '5px',
+     marginBottom: '0px',
+     paddingTop: '7px',
      paddingRight: '16px',
      paddingLeft: '16px',
-     paddingBottom: '16px',
+     verticalAlign: 'center',
 
      backgroundColor: 'white',
-     verticalAlign: 'textTop',
 
      fontFamily: 'Verdana',
      color: '#7f8c8d ',
@@ -58,11 +61,16 @@ var Tweet = React.createClass({
    var avatarStyle = {
      width: '50px',
      height: '50px',
-     position: 'relative',
      display: 'inline-block',
      float: 'left',
      marginRight: '10px',
-     borderRadius: '50%'
+     marginTop: '5px',
+     borderRadius: '50%',
+     verticalAlign: 'center',
+   }
+
+   var test = {
+     verticalAlign: 'center',
    }
 
    return (
@@ -70,13 +78,12 @@ var Tweet = React.createClass({
        <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
 
        <blockquote style={outLine} className="twitter-tweet">
-
-       <div>
-       <img style={avatarStyle} src={this.props.image}/>
-           <p style={paragraph}>{this.props.text}</p>
-           —{this.props.name} (@{this.props.screenName}) May 21, 2006
-           <div style={otherIcon} className="icon-retweet action" />{this.props.retweet}
-           <div style={otherIcon} className="icon-star" />{this.props.favorite}
+         <div style={test}>
+         <img style={avatarStyle} src={this.props.image}/>
+            {this.props.name} (@{this.props.screenName})
+            <div style={otherIcon} className="icon-retweet action" />{this.props.retweet}
+            <div style={otherIcon} className="icon-star" />{this.props.favorite}
+            <p style={paragraph}>{this.props.text}</p>
          </div>
        </blockquote>
      </div>
