@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var tweetSchema = mongoose.Schema({
-	canditate: String,
+	candidate: String,
+	party: String,
 	tweet: Object
 });
 
