@@ -9,7 +9,9 @@ var repGuageData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
-
+   repGuageData.push(data[data.length-1].data.party.rep*100);
+   demGuageData.push(data[data.length-1].data.party.dem*100);
+   console.log(repGuageData, demGuageData)
    data.forEach(function(obj){
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
@@ -43,56 +45,42 @@ $.ajax('/sentiments', {
     }
    });
 
- //   window.demGuage = c3.generate({
- //     bindto: '#demGuageContainer',
- //     data: {
- //         columns: [
- //             demGuageData
- //         ],
- //         type: 'gauge'
- //     },
- //     gauge: {
- //       label: {
- //         format: function(value, ratio) {
- //           return value;
- //         },
- //         show: false // to turn off the min/max labels.
- //       },
- //       units: ' %',
- //       width: 50 // for adjusting arc thickness
- //     },
- //     color: {
- //       pattern: ['blue']
- //     },
- //     size: {
- //       height: 150
- //     }
- //  });
- //  window.repGuage = c3.generate({
- //    bindto: '#repGuageContainer',
- //    data: {
- //        columns: [
- //            repGuageData
- //        ],
- //        type: 'gauge'
- //    },
- //    gauge: {
- //      label: {
- //        format: function(value, ratio) {
- //          return value;
- //        },
- //        show: false // to turn off the min/max labels.
- //      },
- //      units: ' %',
- //      width: 50 // for adjusting arc thickness
- //    },
- //    color: {
- //      pattern: ['red']
- //    },
- //    size: {
- //      height: 150
- //    }
- // });
+   window.demGuage = c3.generate({
+     bindto: '#demGuageContainer',
+      data: {
+          columns: [
+              demGuageData
+          ],
+          type: 'gauge',
+          onclick: function (d, i) { console.log("onclick", d, i); },
+          onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+          onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+      },
+      color: {
+          pattern: ['blue']
+      },
+      size: {
+          height: 180
+      }
+   });
+  window.repGuage = c3.generate({
+    bindto: '#repGuageContainer',
+     data: {
+         columns: [
+             repGuageData
+         ],
+         type: 'gauge',
+         onclick: function (d, i) { console.log("onclick", d, i); },
+         onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+         onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+     },
+     color: {
+         pattern: ['red ']
+     },
+     size: {
+         height: 180
+     }
+  });
  },
  error: function() {
    console.error('error');
