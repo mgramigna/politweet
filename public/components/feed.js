@@ -182,7 +182,6 @@ var TweetListContainer = React.createClass({
     });
   },
   getInitialState: function() {
-    console.log('TweetListContainer: getInitialState');
     return {
       "tweetStore": {
         "bernie sanders": [],
@@ -208,12 +207,10 @@ var TweetListContainer = React.createClass({
   },
 
   _onUpdateSentiment: function(sentimentUpdate) {
-    console.log(sentimentUpdate);
     this.setState({sentiment: sentimentUpdate});
   },
 
   render: function() {
-    console.log('TweetListContainer: getInitialState');
     var boxStyle = {
       padding: '20px'
     }
@@ -230,24 +227,20 @@ var TweetListContainer = React.createClass({
       float: 'right',
       display: 'inline-block'
     }
-    // if (!this.state.tweetStore) {
-    //   return(<p>Hello</p>);
-    // } else {
-    console.log(this);
-      return (
-        <div>
-          <div style={leftStyle}>
-            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['bernie sanders'])} />
-            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['hillary clinton'])} />
-            <TweetList title={"Martin O'Malley"} data={this.state.tweetStore["martin o'malley"]} party={'democratic'} sentiment={formatSentiment(this.state.sentiment["martin o'malley"])}/>
-          </div>
-          <div style={rightStyle}>
-            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['marco rubio'])}/>
-            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['donald trump'])}/>
-            <TweetList title={'Ted Cruz'} data={this.state.tweetStore['ted cruz']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['ted cruz'])} />
-          </div>
+    return (
+      <div>
+        <div style={leftStyle}>
+          <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['bernie sanders'])} />
+          <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['hillary clinton'])} />
+          <TweetList title={"Martin O'Malley"} data={this.state.tweetStore["martin o'malley"]} party={'democratic'} sentiment={formatSentiment(this.state.sentiment["martin o'malley"])}/>
         </div>
-      );
+        <div style={rightStyle}>
+          <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['marco rubio'])}/>
+          <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['donald trump'])}/>
+          <TweetList title={'Ted Cruz'} data={this.state.tweetStore['ted cruz']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['ted cruz'])} />
+        </div>
+      </div>
+    );
 
   }
 })
