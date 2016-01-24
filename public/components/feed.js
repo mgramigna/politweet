@@ -15,7 +15,13 @@ socket.on('tweet', function(tweet) {
   tweetListContainer._onUpdateTweets(tweetStore)
 
 });
+socket.on('newSentiment', function(data) {
+  tweetListContainer._onUpdateSentiment(data);
+});
 
+var formatSentiment = function(raw) {
+  return (Math.floor(raw * 100) + '%');
+}
 
 var Tweet = React.createClass({
  render: function() {
@@ -104,20 +110,27 @@ var TweetList = React.createClass({
       padding: '10px',
       color: 'white'
     }
+    var percentStyle = {
+      position: 'relative'
+    }
     if (this.props.party == 'democratic') {
       headingStyle.backgroundColor = '#000099'
       listStyle.border = '2px solid #000099'
+      percentStyle.float = 'right'
     } else {
       headingStyle.backgroundColor = '#990000'
       listStyle.border = '2px solid #990000'
+      percentStyle.float = 'left'
     }
     var scrollStyle = {
       height: '300px',
       overflow: 'hidden'
     }
+
+
     return (
       <div style={listStyle}>
-        <h2 style={headingStyle}>{this.props.title}</h2>
+        <h2 style={headingStyle}>{this.props.title}<span style={percentStyle}>{this.props.sentiment}</span></h2>
         <div className="tweets" style={scrollStyle} >
         <ReactCSSTransitionGroup transitionName="tweet" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {this.renderTweetRows()}
@@ -149,6 +162,14 @@ var TweetListContainer = React.createClass({
 
       }
     });
+    $.ajax('/sentiments', {
+      success: function(firstSentiment) {
+        self.setState({sentiment: firstSentiment[0].data.candidates});
+      },
+      error: function() {
+
+      }
+    });
   },
   getInitialState: function() {
     return {}
@@ -156,6 +177,10 @@ var TweetListContainer = React.createClass({
 
   _onUpdateTweets: function(tweetStore) {
       this.setState({tweetStore: tweetStore});
+  },
+
+  _onUpdateSentiment: function(newSentiment) {
+    this.setState({sentiment: newSentiment.data.candidates});
   },
 
   render: function() {
@@ -175,19 +200,20 @@ var TweetListContainer = React.createClass({
       float: 'right',
       display: 'inline-block'
     }
-
     if (!this.state.tweetStore) {
       return(<p>Hello</p>);
     } else {
       return (
         <div>
           <div style={leftStyle}>
-            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} />
-            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} />
+            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['bernie sanders'])} />
+            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['hillary clinton'])} />
+            <TweetList title={"Martin O'Malley"} data={this.state.tweetStore["martin o'malley"]} party={'democratic'} sentiment={formatSentiment(this.state.sentiment["martin o'malley"])}/>
           </div>
           <div style={rightStyle}>
-            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} />
-            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} />
+            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['marco rubio'])}/>
+            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['donald trump'])}/>
+            <TweetList title={'Ted Cruz'} data={this.state.tweetStore['ted cruz']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['ted cruz'])} />
           </div>
         </div>
       );
