@@ -14,10 +14,14 @@
   <script src="/d3/c3.min.js"></script>
   <link rel="stylesheet" type="text/css" href="d3/dataStyle.css">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <link rel="stylesheet" type="text/css" href="styles/tooltipster.css" />
+  <script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
+
   <link rel="stylesheet" type="text/css" href="d3/c3.min.css">
 </head>
 <body>
-  <img src="images/logo1.png" onclick="nextPage()" style="align:center" width=1200px></img>
+  <img src="images/logo1.png" id="mainlogo" onclick="nextPage()" style="align:center" width=1200px></img>
   <div id="container0"></div>
   <div id="container1" class="hidden"></div>
   <div id="container2-1" class="hidden"></div>
@@ -27,6 +31,7 @@
   <!-- <script type="text/javascript" src="d3/stateDataScript.js"></script> -->
   <script type="text/javascript" src="d3/sentimentDataScript.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles/tooltipster-light.css">
 
   <script>
     $('#mapImg').on('click', function(evt) {

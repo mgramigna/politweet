@@ -40,3 +40,16 @@ var nextPage = function() {
       break;
   }
 }
+
+$(document).ready(function () {
+  $("#mainlogo").tooltipster({
+    content: $('<span>Click for more.</span>'),
+    theme: 'tooltipster-light'
+  });
+  setTimeout(function() {
+    $('#mainlogo').tooltipster('show');
+  }, 3000);
+  setTimeout(function() {
+    $('#mainlogo').tooltipster('hide');
+  }, 6000);
+});
