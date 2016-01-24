@@ -4,8 +4,8 @@ var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
 var cruzData = ['Cruz'];
 var omalleyData = ["O'Malley"];
-var demPieData = ["Democratic Party"];
-var repPieData = ["Republican Party"];
+var demGuageData = ["Democratic Party"];
+var repGuageData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
@@ -43,56 +43,56 @@ $.ajax('/sentiments', {
     }
    });
 
-   window.demGuage = c3.generate({
-     bindto: '#demGuageContainer',
-     data: {
-         columns: [
-             demPieData
-         ],
-         type: 'gauge'
-     },
-     gauge: {
-       label: {
-         format: function(value, ratio) {
-           return value;
-         },
-         show: false // to turn off the min/max labels.
-       },
-       units: ' %',
-       width: 50 // for adjusting arc thickness
-     },
-     color: {
-       pattern: ['blue']
-     },
-     size: {
-       height: 150
-     }
-  });
-  window.repGuage = c3.generate({
-    bindto: '#repGuageContainer',
-    data: {
-        columns: [
-            repPieData
-        ],
-        type: 'gauge'
-    },
-    gauge: {
-      label: {
-        format: function(value, ratio) {
-          return value;
-        },
-        show: false // to turn off the min/max labels.
-      },
-      units: ' %',
-      width: 50 // for adjusting arc thickness
-    },
-    color: {
-      pattern: ['red']
-    },
-    size: {
-      height: 150
-    }
- });
+ //   window.demGuage = c3.generate({
+ //     bindto: '#demGuageContainer',
+ //     data: {
+ //         columns: [
+ //             demGuageData
+ //         ],
+ //         type: 'gauge'
+ //     },
+ //     gauge: {
+ //       label: {
+ //         format: function(value, ratio) {
+ //           return value;
+ //         },
+ //         show: false // to turn off the min/max labels.
+ //       },
+ //       units: ' %',
+ //       width: 50 // for adjusting arc thickness
+ //     },
+ //     color: {
+ //       pattern: ['blue']
+ //     },
+ //     size: {
+ //       height: 150
+ //     }
+ //  });
+ //  window.repGuage = c3.generate({
+ //    bindto: '#repGuageContainer',
+ //    data: {
+ //        columns: [
+ //            repGuageData
+ //        ],
+ //        type: 'gauge'
+ //    },
+ //    gauge: {
+ //      label: {
+ //        format: function(value, ratio) {
+ //          return value;
+ //        },
+ //        show: false // to turn off the min/max labels.
+ //      },
+ //      units: ' %',
+ //      width: 50 // for adjusting arc thickness
+ //    },
+ //    color: {
+ //      pattern: ['red']
+ //    },
+ //    size: {
+ //      height: 150
+ //    }
+ // });
  },
  error: function() {
    console.error('error');
