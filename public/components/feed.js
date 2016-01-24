@@ -90,7 +90,7 @@ var Tweet = React.createClass({
    }
 
    return (
-     <div>
+     <div className="tweet">
        <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
 
        <blockquote style={outLine} className="twitter-tweet">
@@ -136,6 +136,12 @@ var TweetList = React.createClass({
       height: '300px',
       overflow: 'hidden'
     }
+    var spinnerStyle= {
+      margin: 'auto',
+      width: '50%',
+      display: 'block',
+      marginTop: '60px'
+    }
 
 
     return (
@@ -144,6 +150,7 @@ var TweetList = React.createClass({
         <div className="tweets" style={scrollStyle} >
         <ReactCSSTransitionGroup transitionName="tweet" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {this.renderTweetRows()}
+          <img style={spinnerStyle} src="https://d13yacurqjgara.cloudfront.net/users/12755/screenshots/1037374/hex-loader2.gif" />
         </ReactCSSTransitionGroup>
         </div>
       </div>
@@ -166,6 +173,7 @@ var TweetListContainer = React.createClass({
     $.ajax('/init', {
       success: function(data) {
         tweetStore = data;
+        // Show data
         self.setState({tweetStore: data});
       },
       error: function() {
