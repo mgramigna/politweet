@@ -175,6 +175,12 @@ var TweetListContainer = React.createClass({
       float: 'right',
       display: 'inline-block'
     }
+    var buttonStyle = {
+      background:none;
+      border:none;
+      margin:0;
+      padding:0;
+    }
 
     if (!this.state.tweetStore) {
       return(<p>Hello</p>);
