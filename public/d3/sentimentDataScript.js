@@ -2,6 +2,8 @@ var clintonData = ['Clinton'];
 var bernieData = ['Sanders'];
 var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
+var cruzData = ['Cruz'];
+var omalleyData = ["O'Malley"];
 
 $.ajax('/sentiments', {
  success: function(data) {
@@ -10,6 +12,8 @@ $.ajax('/sentiments', {
      bernieData.push(obj.data.candidates['bernie sanders']*100);
      trumpData.push(obj.data.candidates['donald trump']*100);
      rubioData.push(obj.data.candidates['marco rubio']*100);
+     cruzData.push(obj.data.candidates['ted cruz']*100);
+     omalleyData.push(obj.data.candidates["martin o'malley"]*100);
    });
    window.chart = c3.generate({
     bindto: '#graphContainer',
@@ -20,7 +24,9 @@ $.ajax('/sentiments', {
         clintonData,
         bernieData,
         trumpData,
-        rubioData
+        rubioData,
+        cruzData,
+        omalleyData
       ]
     },
     axis: {
