@@ -4,21 +4,13 @@ var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
 var cruzData = ['Cruz'];
 var omalleyData = ["O'Malley"];
-var demPieData = ["Democratic Party"];
-var repPieData = ["Republican Party"];
+var demGuageData = ["Democratic Party"];
+var repGuageData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
-   demPieData.push(data[0].data.party.dem);
-   repPieData.push(data[0].data.party.rep);
 
-   var flag = true;
    data.forEach(function(obj){
-     if(flag && obj.data.party.dem > 0 && obj.data.party.rep) {
-       demPieData.push(obj.data.party.dem);
-       repPieData.push(obj.data.part.rep);
-       flag = false;
-     }
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
      trumpData.push(obj.data.candidates['donald trump']*100);
@@ -51,23 +43,56 @@ $.ajax('/sentiments', {
     }
    });
 
-   window.pieChart = c3.generate({
-    bindto: '#pieContainer',
-    data: {
-       columns: [
-           demPieData,
-           repPieData
-       ],
-       type: 'pie'
-     },
-     pie: {
-       label: {
-           format: function (value, ratio, id) {
-               return d3.format('%')(value);
-           }
-       }
-     }
-   });
+ //   window.demGuage = c3.generate({
+ //     bindto: '#demGuageContainer',
+ //     data: {
+ //         columns: [
+ //             demGuageData
+ //         ],
+ //         type: 'gauge'
+ //     },
+ //     gauge: {
+ //       label: {
+ //         format: function(value, ratio) {
+ //           return value;
+ //         },
+ //         show: false // to turn off the min/max labels.
+ //       },
+ //       units: ' %',
+ //       width: 50 // for adjusting arc thickness
+ //     },
+ //     color: {
+ //       pattern: ['blue']
+ //     },
+ //     size: {
+ //       height: 150
+ //     }
+ //  });
+ //  window.repGuage = c3.generate({
+ //    bindto: '#repGuageContainer',
+ //    data: {
+ //        columns: [
+ //            repGuageData
+ //        ],
+ //        type: 'gauge'
+ //    },
+ //    gauge: {
+ //      label: {
+ //        format: function(value, ratio) {
+ //          return value;
+ //        },
+ //        show: false // to turn off the min/max labels.
+ //      },
+ //      units: ' %',
+ //      width: 50 // for adjusting arc thickness
+ //    },
+ //    color: {
+ //      pattern: ['red']
+ //    },
+ //    size: {
+ //      height: 150
+ //    }
+ // });
  },
  error: function() {
    console.error('error');
@@ -75,13 +100,15 @@ $.ajax('/sentiments', {
 });
 
 $('#hideGraphBtn').on('click', function(evt) {
-  $('#pieContainer').hide();
+  $('#repGuageContainer').hide();
   $('#graphContainer').hide();
+  $('#demGuageContainer').hide();
   $('#container').show();
 })
 
 $('#showGraphBtn').on('click', function(evt) {
-  $('#pieContainer').hide();
+  $('#repGuageContainer').hide();
+  $('#demGuageContainer').hide();
   $('#container').hide();
   $('#graphContainer').show();
   window.lineChart.resize();
@@ -90,12 +117,15 @@ $('#showGraphBtn').on('click', function(evt) {
 $('#showPieBtn').on('click', function(evt) {
   $('#container').hide();
   $('#graphContainer').hide();
-  $('#pieContainer').show();
-  window.pieChart.resize();
+  $('#repGuageContainer').show();
+  $('#demGuageContainer').show();
+  window.demGuage.resize();
+  window.repGuage.resize();
 });
 
 $('#hidePieBtn').on('click', function(evt) {
   $('#container').show();
   $('#graphContainer').hide();
-  $('#pieContainer').hide();
+  $('#repGuageContainer').hide();
+  $('#demGuageContainer').hide();
 });
