@@ -97,7 +97,10 @@ server.listen(3000, function() {
   console.log("Server started, listening on port 3000");
 });
 
-db.getAllSentimentsSince(new Date(0), function(sentiments){
+//Initial data for the current sentiment algorithm
+var initialD = new Date();
+initialD.setHours(initialD.getHours() - 1);
+db.getAllSentimentsSince(initialD, function(sentiments){
   sentiments.forEach(function(sentiment){
     for(var key in sentiment.data.candidates){
       currentSentiment.candidates[key] = averageAlgorithm(sentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
