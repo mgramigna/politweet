@@ -107,7 +107,6 @@ twitter.onTweet(function(tweet){
     tweet: tweet.tweet,
     date: new Date()
   }));
-  console.log(tweet.tweet.place);
   users.forEach(function(user){
     user.volatile.emit('tweet', tweet);
   });

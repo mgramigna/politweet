@@ -26,7 +26,7 @@ $.ajax('/sentiments', {
     data: {
       x: 'x',
       columns: [
-        ['x', 5, 10, 15, 20, 25, 30],
+        ['x', 1, 2, 3, 4, 5, 6],
         clintonData,
         bernieData,
         trumpData,
