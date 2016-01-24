@@ -9,9 +9,6 @@ var repGuageData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
-   repGuageData.push(data[data.length-1].data.party.rep*100);
-   demGuageData.push(data[data.length-1].data.party.dem*100);
-   console.log(repGuageData, demGuageData)
    data.forEach(function(obj){
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
@@ -44,12 +41,39 @@ $.ajax('/sentiments', {
       }
     }
    });
+ },
+ error: function() {
+   console.error('error');
+ }
+});
 
-   window.demGuage = c3.generate({
-     bindto: '#demGuageContainer',
+$.ajax('/sentiments/average', {
+  success: function(data) {
+    repGuageData.push(data.party.rep*100);
+    demGuageData.push(data.party.dem*100);
+    window.demGuage = c3.generate({
+      bindto: '#demGuageContainer',
+       data: {
+           columns: [
+               demGuageData
+           ],
+           type: 'gauge',
+           onclick: function (d, i) { console.log("onclick", d, i); },
+           onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+           onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+       },
+       color: {
+           pattern: ['blue']
+       },
+       size: {
+           height: 180
+       }
+    });
+   window.repGuage = c3.generate({
+     bindto: '#repGuageContainer',
       data: {
           columns: [
-              demGuageData
+              repGuageData
           ],
           type: 'gauge',
           onclick: function (d, i) { console.log("onclick", d, i); },
@@ -57,34 +81,16 @@ $.ajax('/sentiments', {
           onmouseout: function (d, i) { console.log("onmouseout", d, i); }
       },
       color: {
-          pattern: ['blue']
+          pattern: ['red ']
       },
       size: {
           height: 180
       }
-   });
-  window.repGuage = c3.generate({
-    bindto: '#repGuageContainer',
-     data: {
-         columns: [
-             repGuageData
-         ],
-         type: 'gauge',
-         onclick: function (d, i) { console.log("onclick", d, i); },
-         onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-         onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-     },
-     color: {
-         pattern: ['red ']
-     },
-     size: {
-         height: 180
-     }
-  });
- },
- error: function() {
-   console.error('error');
- }
+    });
+  },
+  error: function() {
+
+  }
 });
 
 $('#hideGraphBtn').on('click', function(evt) {
