@@ -4,8 +4,8 @@ var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
 var cruzData = ['Cruz'];
 var omalleyData = ["O'Malley"];
-var demGuageData = ["Democratic Party"];
-var repGuageData = ["Republican Party"];
+var demGaugeData = ["Democratic Party"];
+var repGaugeData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
@@ -49,13 +49,13 @@ $.ajax('/sentiments', {
 
 $.ajax('/sentiments/average', {
   success: function(data) {
-    repGuageData.push(data.party.rep*100);
-    demGuageData.push(data.party.dem*100);
-    window.demGuage = c3.generate({
+    repGaugeData.push(data.party.rep*100);
+    demGaugeData.push(data.party.dem*100);
+    window.demGauge = c3.generate({
       bindto: '#container2-1',
        data: {
            columns: [
-               demGuageData
+               demGaugeData
            ],
            type: 'gauge',
            onclick: function (d, i) { console.log("onclick", d, i); },
@@ -69,11 +69,11 @@ $.ajax('/sentiments/average', {
            height: 180
        }
     });
-   window.repGuage = c3.generate({
+   window.repGauge = c3.generate({
      bindto: '#container2-2',
       data: {
           columns: [
-              repGuageData
+              repGaugeData
           ],
           type: 'gauge',
           onclick: function (d, i) { console.log("onclick", d, i); },

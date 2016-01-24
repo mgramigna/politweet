@@ -1,6 +1,9 @@
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var socket = io.connect(location.host);
 var tweetStore = {}
+
+
+
 socket.on('tweet', function(tweet) {
   if (tweetStore.hasOwnProperty(tweet.candidate)) {
     if (tweetStore[tweet.candidate].length >= 5) {
@@ -16,7 +19,14 @@ socket.on('tweet', function(tweet) {
 
 });
 socket.on('sentimentUpdate', function(data) {
+  window.demGauge.load({
+    columns: [["Democratic Party", data.party.dem*100]]
+  });
+  window.repGauge.load({
+    columns: [["Republican Party", data.party.rep*100]]
+  })
   tweetListContainer._onUpdateSentiment(data.candidates);
+
 });
 
 var formatSentiment = function(raw) {

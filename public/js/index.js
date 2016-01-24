@@ -27,8 +27,8 @@ var nextPage = function() {
       $('#container3').hide();
       $('#container2-1').show();
       $('#container2-2').show();
-      window.demGuage.resize();
-      window.repGuage.resize();
+      window.demGauge.resize();
+      window.repGauge.resize();
       break;
     case 3:
       $('#container0').hide();
