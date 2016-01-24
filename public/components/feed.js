@@ -182,7 +182,25 @@ var TweetListContainer = React.createClass({
     });
   },
   getInitialState: function() {
-    return {}
+    console.log('TweetListContainer: getInitialState');
+    return {
+      "tweetStore": {
+        "bernie sanders": [],
+        "marco rubio": [],
+        "donald trump": [],
+        "hillary clinton": [],
+        "martin o'malley": [],
+        "ted cruz": []
+      },
+      "sentiment": {
+        "bernie sanders": 0,
+        "marco rubio": 0,
+        "donald trump": 0,
+        "hillary clinton": 0,
+        "martin o'malley": 0,
+        "ted cruz": 0
+      }
+    }
   },
 
   _onUpdateTweets: function(tweetStore) {
@@ -195,6 +213,7 @@ var TweetListContainer = React.createClass({
   },
 
   render: function() {
+    console.log('TweetListContainer: getInitialState');
     var boxStyle = {
       padding: '20px'
     }
@@ -211,9 +230,10 @@ var TweetListContainer = React.createClass({
       float: 'right',
       display: 'inline-block'
     }
-    if (!this.state.tweetStore) {
-      return(<p>Hello</p>);
-    } else {
+    // if (!this.state.tweetStore) {
+    //   return(<p>Hello</p>);
+    // } else {
+    console.log(this);
       return (
         <div>
           <div style={leftStyle}>
@@ -228,7 +248,7 @@ var TweetListContainer = React.createClass({
           </div>
         </div>
       );
-    }
+
   }
 })
 
