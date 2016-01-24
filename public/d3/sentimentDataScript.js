@@ -4,25 +4,25 @@ var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
 var cruzData = ['Cruz'];
 var omalleyData = ["O'Malley"];
-var demGuageData = ["Democratic Party"];
-var repGuageData = ["Republican Party"];
+var demGaugeData = ["Democratic Party"];
+var repGaugeData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
-   repGuageData.push(data[data.length-1].data.party.rep*100);
-   demGuageData.push(data[data.length-1].data.party.dem*100);
-   console.log(repGuageData, demGuageData)
    data.forEach(function(obj){
-     clintonData.push(obj.data.candidates['hillary clinton']*100);
-     bernieData.push(obj.data.candidates['bernie sanders']*100);
-     trumpData.push(obj.data.candidates['donald trump']*100);
-     rubioData.push(obj.data.candidates['marco rubio']*100);
-     cruzData.push(obj.data.candidates['ted cruz']*100);
-     omalleyData.push(obj.data.candidates["martin o'malley"]*100);
+     clintonData.push((obj.data.candidates['hillary clinton']*100).toFixed(1));
+     bernieData.push((obj.data.candidates['bernie sanders']*100).toFixed(1));
+     trumpData.push((obj.data.candidates['donald trump']*100).toFixed(1));
+     rubioData.push((obj.data.candidates['marco rubio']*100).toFixed(1));
+     cruzData.push((obj.data.candidates['ted cruz']*100).toFixed(1));
+     omalleyData.push((obj.data.candidates["martin o'malley"]*100).toFixed(1));
    });
 
    window.lineChart = c3.generate({
-    bindto: '#graphContainer',
+    bindto: '#container1',
+    size: {
+      height: 500
+    },
     data: {
       x: 'x',
       columns: [
@@ -44,12 +44,36 @@ $.ajax('/sentiments', {
       }
     }
    });
+ },
+ error: function() {
+   console.error('error');
+ }
+});
 
-   window.demGuage = c3.generate({
-     bindto: '#demGuageContainer',
+$.ajax('/sentiments/average', {
+  success: function(data) {
+    repGaugeData.push((data.party.rep*100).toFixed(1));
+    demGaugeData.push((data.party.dem*100).toFixed(1));
+    window.demGauge = c3.generate({
+      bindto: '#container2-1',
+       data: {
+           columns: [
+               demGaugeData
+           ],
+           type: 'gauge',
+       },
+       color: {
+           pattern: ['blue']
+       },
+       size: {
+           height: 180
+       }
+    });
+   window.repGauge = c3.generate({
+     bindto: '#container2-2',
       data: {
           columns: [
-              demGuageData
+              repGaugeData
           ],
           type: 'gauge',
           onclick: function (d, i) { console.log("onclick", d, i); },
@@ -57,63 +81,14 @@ $.ajax('/sentiments', {
           onmouseout: function (d, i) { console.log("onmouseout", d, i); }
       },
       color: {
-          pattern: ['blue']
+          pattern: ['red ']
       },
       size: {
           height: 180
       }
-   });
-  window.repGuage = c3.generate({
-    bindto: '#repGuageContainer',
-     data: {
-         columns: [
-             repGuageData
-         ],
-         type: 'gauge',
-         onclick: function (d, i) { console.log("onclick", d, i); },
-         onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-         onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-     },
-     color: {
-         pattern: ['red ']
-     },
-     size: {
-         height: 180
-     }
-  });
- },
- error: function() {
-   console.error('error');
- }
-});
+    });
+  },
+  error: function() {
 
-$('#hideGraphBtn').on('click', function(evt) {
-  $('#repGuageContainer').hide();
-  $('#graphContainer').hide();
-  $('#demGuageContainer').hide();
-  $('#container').show();
-})
-
-$('#showGraphBtn').on('click', function(evt) {
-  $('#repGuageContainer').hide();
-  $('#demGuageContainer').hide();
-  $('#container').hide();
-  $('#graphContainer').show();
-  window.lineChart.resize();
-});
-
-$('#showPieBtn').on('click', function(evt) {
-  $('#container').hide();
-  $('#graphContainer').hide();
-  $('#repGuageContainer').show();
-  $('#demGuageContainer').show();
-  window.demGuage.resize();
-  window.repGuage.resize();
-});
-
-$('#hidePieBtn').on('click', function(evt) {
-  $('#container').show();
-  $('#graphContainer').hide();
-  $('#repGuageContainer').hide();
-  $('#demGuageContainer').hide();
+  }
 });
