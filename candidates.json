@@ -8,11 +8,19 @@
     "party": "republican"
   },
   {
+    "name": "ted cruz",
+    "party": "republican"
+  },
+  {
     "name": "hillary clinton",
     "party": "democratic"
   },
   {
     "name": "bernie sanders",
+    "party": "democratic"
+  },
+  {
+    "name": "martin o'malley",
     "party": "democratic"
   }
 ]
