@@ -12,7 +12,14 @@ var Tweet = require('./database/schemas/Tweet');
 var indico = require('./indico/IndicoController');
 var Sentiment = require('./database/schemas/Sentiment');
 var State = require('./database/schemas/State');
-
+var currentSentiment = {
+  candidates: {},
+  party: {
+    dem: 0.0,
+    rep: 0.0
+  }
+};
+var sentimentCount = 1;
 
 //Get Candidates List and Make asyncObject
 var candidates = [];
@@ -23,6 +30,7 @@ fs.readFile('./candidates.json', function read(err, data) {
   }
   candidates = JSON.parse(data);
   candidates.forEach(function(candidate){
+    currentSentiment.candidates[candidate.name] = 0.0;
     asyncObject[candidate.name] = function(callback){
       db.getTweetsByCandidate(candidate.name, 5, function(tweets){
         callback(null, tweets);
@@ -57,16 +65,12 @@ app.get('/sentiments', function(req, res){
 
 //Average Sentiment over time via GET
 app.get('/sentiments/average', function(req, res){
-
+  res.json(currentSentiment);
 });
 
 //State Sentiment Data via GET
 app.get('/states', function(req, res){
-  var d = new Date();
-  d.setDate(d.getDate() - 1);
-  db.getAllStateSentimentsSince(d, function(sentiments){
-    res.json(sentiments);
-  });
+  //TODO
 });
 
 //Socket Connections
@@ -93,6 +97,16 @@ server.listen(3000, function() {
   console.log("Server started, listening on port 3000");
 });
 
+db.getAllSentimentsSince(new Date(0), function(sentiments){
+  sentiments.forEach(function(sentiment){
+    for(var key in sentiment.data.candidates){
+      currentSentiment.candidates[key] = averageAlgorithm(sentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
+    }
+    currentSentiment.party.dem = averageAlgorithm(sentiment.data.party.dem, currentSentiment.party.dem, sentimentCount);
+    currentSentiment.party.rep = averageAlgorithm(sentiment.data.party.rep, currentSentiment.party.rep, sentimentCount);
+    sentimentCount++;
+  });
+});
 
 //Cron Job Changing the Sentiments every 5 minutes
 var job = new CronJob('0 */1 * * * *',
@@ -151,6 +165,16 @@ var job = new CronJob('0 */1 * * * *',
           }
         });
         newSentiment.data.party.rep = newSentiment.data.party.rep / n;
+        //Update current sentiment via Jacks Algorithm, spit out via socket.io
+        for(var key in newSentiment.data.candidates){
+          currentSentiment.candidates[key] = averageAlgorithm(newSentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
+        }
+        currentSentiment.party.dem = averageAlgorithm(newSentiment.data.party.dem, currentSentiment.party.dem, sentimentCount);
+        currentSentiment.party.rep = averageAlgorithm(newSentiment.data.party.rep, currentSentiment.party.rep, sentimentCount);
+        sentimentCount++;
+        users.forEach(function(user){
+          user.volatile.emit('sentimentUpdate', currentSentiment);
+        });
         //Send this newSentiment over Socket.io and save it in Mongoose
         users.forEach(function(user){
           user.volatile.emit('newSentiment', newSentiment);
@@ -163,3 +187,7 @@ var job = new CronJob('0 */1 * * * *',
   true, /* Start the job right now */
   'America/New_York' //TimeZone
 );
+
+var averageAlgorithm = function(newRating, savedRating, count){
+  return (newRating - savedRating) / count + savedRating
+};
