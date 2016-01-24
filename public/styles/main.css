@@ -18,3 +18,7 @@
 #mapImg:hover {
   cursor: pointer;
 }
+
+#graphContainer {
+  display: none;
+}
