@@ -9,9 +9,9 @@ var repGuageData = ["Republican Party"];
 
 $.ajax('/sentiments', {
  success: function(data) {
+   console.log(data)
    repGuageData.push(data[data.length-1].data.party.rep*100);
    demGuageData.push(data[data.length-1].data.party.dem*100);
-   console.log(repGuageData, demGuageData)
    data.forEach(function(obj){
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
