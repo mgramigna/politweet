@@ -14,3 +14,12 @@
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
+
+#mapImg:hover {
+  cursor: pointer;
+}
+
+body{
+  background-color: #D3D3D3;
+  background: linear-gradient(#D3D3D3, white, white);
+}
