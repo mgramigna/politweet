@@ -19,6 +19,21 @@ var currentSentiment = {
     rep: 0.0
   }
 };
+var stateList = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL",
+"GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME",
+"MH", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV",
+"NY", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN", "TX", "UT",
+"VA", "VI", "VT", "WA", "WI", "WV", "WY"];
+var currentState = {};
+stateList.forEach(function(state){
+  currentState[state] = {
+    candidates: {},
+    party: {
+      dem: 0.0,
+      rep: 0.0
+    }
+  };
+});
 
 //Get Candidates List and Make asyncObject
 var candidates = [];
@@ -46,6 +61,12 @@ app.get('/candidates', function(req, res){
   res.json(candidates);
 });
 
+app.get('/count/:candidate', function(req, res){
+  db.getAllTweetsByCandidateSince(req.params.candidate, new Date(0), function(tweets){
+    res.send(tweets.length);
+  });
+});
+
 //Initial Tweet Feed via GET
 app.get('/init', function(req, res){
   async.series(asyncObject, function(err, response){
@@ -69,7 +90,7 @@ app.get('/sentiments/average', function(req, res){
 
 //State Sentiment Data via GET
 app.get('/states', function(req, res){
-  //TODO
+  res.json(currentState);
 });
 
 //Socket Connections
@@ -86,6 +107,7 @@ twitter.onTweet(function(tweet){
     tweet: tweet.tweet,
     date: new Date()
   }));
+  console.log(tweet.tweet.place);
   users.forEach(function(user){
     user.volatile.emit('tweet', tweet);
   });
@@ -96,7 +118,7 @@ server.listen(3000, function() {
   console.log("Server started, listening on port 3000");
 });
 
-//Initial data for the current sentiment algorithm
+//Initialize data for the current sentiment algorithm
 var initialD = new Date();
 initialD.setHours(initialD.getHours() - 1);
 db.getAllSentimentsSince(initialD, function(sentiments){
@@ -110,6 +132,11 @@ db.getAllSentimentsSince(initialD, function(sentiments){
     sentimentCount++;
   });
 });
+
+//Initialize data for each state's sentiment
+// var dat = new Date();
+// dat.setHours(dat.getHours() - 1);
+
 
 //Cron Job Changing the Sentiments every 5 minutes
 var job = new CronJob('0 */1 * * * *',
