@@ -12,7 +12,7 @@ $.ajax('/sentiments', {
    demPieData.push(data[0].data.party.dem);
    repPieData.push(data[0].data.party.rep);
 
-   console.log(data);
+
    data.forEach(function(obj){
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
