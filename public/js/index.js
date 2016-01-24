@@ -36,6 +36,7 @@ var nextPage = function() {
       $('#container2-1').hide();
       $('#container2-2').hide();
       $('#container3').show();
+      window.tweetCountGraph.resize();
       break;
   }
 }

@@ -93,81 +93,83 @@ $.ajax('/sentiments/average', {
   }
 });
 
-var sandersTweetCount = ["Bernie Sanders"];
-var clintonTweetCount = ["Hillary Clinton"];
-var omalleyTweetCount = ["Martin O'Malley"];
-var trumpTweetCount = ["Donald Trump"];
-var rubioTweetCount = ["Marco Rubio"];
-var cruzTweetCount = ["Ted Cruz"];
+var sandersTweetCount;
+var clintonTweetCount;
+var omalleyTweetCount;
+var trumpTweetCount;
+var rubioTweetCount;
+var cruzTweetCount;
 
-$.ajax('/count/' + 'bernie sanders', {
+$.ajax('/count/' + 'bernie%20sanders', {
   success: function(data) {
-    sandersTweetCount.push(data)
+    sandersTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 });
 
-$.ajax('/count/' + 'hillary clinton', {
+$.ajax('/count/' + 'hillary%20clinton', {
   success: function(data) {
-    clintonTweetCount.push(data)
+    clintonTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 })
 
-$.ajax('/count/' + 'martin omalley', {
+$.ajax('/count/' + 'martin%20omalley', {
   success: function(data) {
-    omalleyTweetCount.push(data)
+    omalleyTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 })
 
-$.ajax('/count/' + 'donald trump', {
+$.ajax('/count/' + 'donald%20trump', {
   success: function(data) {
-    trumpTweetCount.push(data)
+    trumpTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 })
 
-$.ajax('/count/' + 'marco rubio', {
+$.ajax('/count/' + 'marco%20rubio', {
   success: function(data) {
-    rubioTweetCount.push(data)
+    rubioTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 })
 
-$.ajax('/count/' + 'ted cruz', {
+$.ajax('/count/' + 'ted%20cruz', {
   success: function(data) {
-    cruzTweetCount.push(data)
+    cruzTweetCount = data;
+    loadTweetCountGraph();
   }, error: function() {
 
   }
 });
-
-window.tweetCountGraph = c3.generate({
-  bindto: '#container3',
-    data: {
-        columns: [
-            sandersTweetCount,
-            clintonTweetCount,
-            omalleyTweetCount,
-            trumpTweetCount,
-            rubioTweetCount,
-            cruzTweetCount
-        ],
-        types: {
-            data1: 'bar',
-        }
-    },
-    axis: {
-      x: {
-        type: 'category',
-        categories: ['Bernie Sanders', 'Hillary Clinton', 'Martin O\'Malley', 'Donald Trump', 'Marco Rubio', 'Ted Cruz']
+var loadTweetCountGraph = function() {
+  window.tweetCountGraph = c3.generate({
+    bindto: '#container3',
+      data: {
+          columns: [
+            ['Tweet Count', sandersTweetCount, clintonTweetCount, omalleyTweetCount, trumpTweetCount, rubioTweetCount, cruzTweetCount]
+          ],
+          type: 'bar'
       },
-      rotated: true
-    }
-});
+      axis: {
+        x: {
+          type: 'category',
+          categories: ['Bernie Sanders', 'Hillary Clinton', 'Martin O\'Malley', 'Donald Trump', 'Marco Rubio', 'Ted Cruz']
+        },
+        rotated: true
+      }
+  });
+}
+
+loadTweetCountGraph();
