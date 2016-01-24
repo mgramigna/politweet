@@ -107,20 +107,27 @@ var TweetList = React.createClass({
       padding: '10px',
       color: 'white'
     }
+    var percentStyle = {
+      position: 'relative'
+    }
     if (this.props.party == 'democratic') {
       headingStyle.backgroundColor = '#000099'
       listStyle.border = '2px solid #000099'
+      percentStyle.float = 'right'
     } else {
       headingStyle.backgroundColor = '#990000'
       listStyle.border = '2px solid #990000'
+      percentStyle.float = 'left'
     }
     var scrollStyle = {
       height: '300px',
       overflow: 'hidden'
     }
+
+
     return (
       <div style={listStyle}>
-        <h2 style={headingStyle}>{this.props.title}</h2>
+        <h2 style={headingStyle}>{this.props.title}<span style={percentStyle}>37%</span></h2>
         <div className="tweets" style={scrollStyle} >
         <ReactCSSTransitionGroup transitionName="tweet" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {this.renderTweetRows()}
