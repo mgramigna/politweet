@@ -15,14 +15,15 @@
   transition: opacity 500ms ease-in;
 }
 
-#mapImg:hover {
-  cursor: pointer;
-}
-
 .hidden {
   display: none;
 }
 
 .inlineBlock {
   display: inline-block;;
+}
+
+#mainlogo {
+  margin: 0 auto;
+  width: 100%
 }
