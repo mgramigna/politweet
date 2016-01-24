@@ -12,8 +12,13 @@ $.ajax('/sentiments', {
    demPieData.push(data[0].data.party.dem);
    repPieData.push(data[0].data.party.rep);
 
-
+   var flag = true;
    data.forEach(function(obj){
+     if(flag && obj.data.party.dem > 0 && obj.data.party.rep) {
+       demPieData.push(obj.data.party.dem);
+       repPieData.push(obj.data.part.rep);
+       flag = false;
+     }
      clintonData.push(obj.data.candidates['hillary clinton']*100);
      bernieData.push(obj.data.candidates['bernie sanders']*100);
      trumpData.push(obj.data.candidates['donald trump']*100);
@@ -21,6 +26,7 @@ $.ajax('/sentiments', {
      cruzData.push(obj.data.candidates['ted cruz']*100);
      omalleyData.push(obj.data.candidates["martin o'malley"]*100);
    });
+
    window.lineChart = c3.generate({
     bindto: '#graphContainer',
     data: {
