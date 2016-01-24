@@ -19,7 +19,6 @@ var currentSentiment = {
     rep: 0.0
   }
 };
-var sentimentCount = 1;
 
 //Get Candidates List and Make asyncObject
 var candidates = [];
@@ -102,6 +101,7 @@ var initialD = new Date();
 initialD.setHours(initialD.getHours() - 1);
 db.getAllSentimentsSince(initialD, function(sentiments){
   sentiments.forEach(function(sentiment){
+    var sentimentCount = 1;
     for(var key in sentiment.data.candidates){
       currentSentiment.candidates[key] = averageAlgorithm(sentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
     }
@@ -168,16 +168,26 @@ var job = new CronJob('0 */1 * * * *',
           }
         });
         newSentiment.data.party.rep = newSentiment.data.party.rep / n;
+
         //Update current sentiment via Jacks Algorithm, spit out via socket.io
-        for(var key in newSentiment.data.candidates){
-          currentSentiment.candidates[key] = averageAlgorithm(newSentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
-        }
-        currentSentiment.party.dem = averageAlgorithm(newSentiment.data.party.dem, currentSentiment.party.dem, sentimentCount);
-        currentSentiment.party.rep = averageAlgorithm(newSentiment.data.party.rep, currentSentiment.party.rep, sentimentCount);
-        sentimentCount++;
+        var initialDate = new Date();
+        initialDate.setHours(initialDate.getHours() - 1);
+        db.getAllSentimentsSince(initialDate, function(sentiments){
+          sentiments.push(newSentiment);
+          var sentimentCount = 1;
+          sentiments.forEach(function(sentiment){
+            for(var key in sentiment.data.candidates){
+              currentSentiment.candidates[key] = averageAlgorithm(sentiment.data.candidates[key], currentSentiment.candidates[key], sentimentCount);
+            }
+            currentSentiment.party.dem = averageAlgorithm(sentiment.data.party.dem, currentSentiment.party.dem, sentimentCount);
+            currentSentiment.party.rep = averageAlgorithm(sentiment.data.party.rep, currentSentiment.party.rep, sentimentCount);
+            sentimentCount++;
+          });
+        });
         users.forEach(function(user){
           user.volatile.emit('sentimentUpdate', currentSentiment);
         });
+
         //Send this newSentiment over Socket.io and save it in Mongoose
         users.forEach(function(user){
           user.volatile.emit('newSentiment', newSentiment);
@@ -192,5 +202,9 @@ var job = new CronJob('0 */1 * * * *',
 );
 
 var averageAlgorithm = function(newRating, savedRating, count){
-  return (newRating - savedRating) / count + savedRating
+  if(newRating > 0) {
+    return (newRating - savedRating) / count + savedRating
+  } else {
+  return savedRating;
+  }
 };

@@ -19,7 +19,7 @@ $.ajax('/sentiments', {
    });
 
    window.lineChart = c3.generate({
-    bindto: '#graphContainer',
+    bindto: '#container1',
     data: {
       x: 'x',
       columns: [
@@ -52,7 +52,7 @@ $.ajax('/sentiments/average', {
     repGuageData.push(data.party.rep*100);
     demGuageData.push(data.party.dem*100);
     window.demGuage = c3.generate({
-      bindto: '#demGuageContainer',
+      bindto: '#container2-1',
        data: {
            columns: [
                demGuageData
@@ -70,7 +70,7 @@ $.ajax('/sentiments/average', {
        }
     });
    window.repGuage = c3.generate({
-     bindto: '#repGuageContainer',
+     bindto: '#container2-2',
       data: {
           columns: [
               repGuageData
@@ -91,35 +91,4 @@ $.ajax('/sentiments/average', {
   error: function() {
 
   }
-});
-
-$('#hideGraphBtn').on('click', function(evt) {
-  $('#repGuageContainer').hide();
-  $('#graphContainer').hide();
-  $('#demGuageContainer').hide();
-  $('#container').show();
-})
-
-$('#showGraphBtn').on('click', function(evt) {
-  $('#repGuageContainer').hide();
-  $('#demGuageContainer').hide();
-  $('#container').hide();
-  $('#graphContainer').show();
-  window.lineChart.resize();
-});
-
-$('#showPieBtn').on('click', function(evt) {
-  $('#container').hide();
-  $('#graphContainer').hide();
-  $('#repGuageContainer').show();
-  $('#demGuageContainer').show();
-  window.demGuage.resize();
-  window.repGuage.resize();
-});
-
-$('#hidePieBtn').on('click', function(evt) {
-  $('#container').show();
-  $('#graphContainer').hide();
-  $('#repGuageContainer').hide();
-  $('#demGuageContainer').hide();
 });

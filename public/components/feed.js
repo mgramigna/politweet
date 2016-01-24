@@ -224,5 +224,5 @@ var TweetListContainer = React.createClass({
 
 var tweetListContainer = ReactDOM.render(
   <TweetListContainer />,
-  document.getElementById('container')
+  document.getElementById('container0')
 );
