@@ -20,6 +20,9 @@ $.ajax('/sentiments', {
 
    window.lineChart = c3.generate({
     bindto: '#container1',
+    size: {
+      height: 500
+    },
     data: {
       x: 'x',
       columns: [
