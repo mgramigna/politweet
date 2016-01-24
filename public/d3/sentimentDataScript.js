@@ -92,3 +92,82 @@ $.ajax('/sentiments/average', {
 
   }
 });
+
+var sandersTweetCount = ["Bernie Sanders"];
+var clintonTweetCount = ["Hillary Clinton"];
+var omalleyTweetCount = ["Martin O'Malley"];
+var trumpTweetCount = ["Donald Trump"];
+var rubioTweetCount = ["Marco Rubio"];
+var cruzTweetCount = ["Ted Cruz"];
+
+$.ajax('/count/' + 'bernie sanders', {
+  success: function(data) {
+    sandersTweetCount.push(data)
+  }, error: function() {
+
+  }
+});
+
+$.ajax('/count/' + 'hillary clinton', {
+  success: function(data) {
+    clintonTweetCount.push(data)
+  }, error: function() {
+
+  }
+})
+
+$.ajax('/count/' + 'martin omalley', {
+  success: function(data) {
+    omalleyTweetCount.push(data)
+  }, error: function() {
+
+  }
+})
+
+$.ajax('/count/' + 'donald trump', {
+  success: function(data) {
+    trumpTweetCount.push(data)
+  }, error: function() {
+
+  }
+})
+
+$.ajax('/count/' + 'marco rubio', {
+  success: function(data) {
+    rubioTweetCount.push(data)
+  }, error: function() {
+
+  }
+})
+
+$.ajax('/count/' + 'ted cruz', {
+  success: function(data) {
+    cruzTweetCount.push(data)
+  }, error: function() {
+
+  }
+});
+
+window.tweetCountGraph = c3.generate({
+  bindto: '#container3',
+    data: {
+        columns: [
+            sandersTweetCount,
+            clintonTweetCount,
+            omalleyTweetCount,
+            trumpTweetCount,
+            rubioTweetCount,
+            cruzTweetCount
+        ],
+        types: {
+            data1: 'bar',
+        }
+    },
+    axis: {
+      x: {
+        type: 'category',
+        categories: ['Bernie Sanders', 'Hillary Clinton', 'Martin O\'Malley', 'Donald Trump', 'Marco Rubio', 'Ted Cruz']
+      },
+      rotated: true
+    }
+});
