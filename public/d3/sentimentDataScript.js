@@ -4,11 +4,10 @@ var trumpData = ['Trump'];
 var rubioData = ['Rubio'];
 
 $('.sentimentBtn').on('click', function(evt) {
-  document.getElementById('light').style.display='block';
-  document.getElementById('fade').style.display='block';
+  ReactDOM.unmountComponentAtNode(document.getElementById('container'));
+
   $.ajax('/sentiments', {
    success: function(data) {
-     console.log(data);
      data.forEach(function(obj){
        clintonData.push(obj.data.candidates['hillary clinton']*100);
        bernieData.push(obj.data.candidates['bernie sanders']*100);
@@ -16,7 +15,7 @@ $('.sentimentBtn').on('click', function(evt) {
        rubioData.push(obj.data.candidates['marco rubio']*100);
      });
      var chart = c3.generate({
-      bindto: '#light',
+      bindto: '#container',
       data: {
         x: 'x',
         columns: [
@@ -41,9 +40,4 @@ $('.sentimentBtn').on('click', function(evt) {
      console.error('error');
    }
   });
-});
-
-$('.black_overlay').on('click', function(e) {
-  document.getElementById('light').style.display='none';
-  document.getElementById('fade').style.display='none';
 });
