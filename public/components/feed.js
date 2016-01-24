@@ -19,6 +19,9 @@ socket.on('sentimentUpdate', function(data) {
   tweetListContainer._onUpdateSentiment(data);
 });
 
+var formatSentiment = function(raw) {
+  return (Math.floor(raw * 100) + '%');
+}
 
 var Tweet = React.createClass({
  render: function() {
@@ -127,7 +130,7 @@ var TweetList = React.createClass({
 
     return (
       <div style={listStyle}>
-        <h2 style={headingStyle}>{this.props.title}<span style={percentStyle}>37%</span></h2>
+        <h2 style={headingStyle}>{this.props.title}<span style={percentStyle}>{this.props.sentiment}</span></h2>
         <div className="tweets" style={scrollStyle} >
         <ReactCSSTransitionGroup transitionName="tweet" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {this.renderTweetRows()}
@@ -159,9 +162,10 @@ var TweetListContainer = React.createClass({
 
       }
     });
-    $.ajax('sentiment/average', {
+    $.ajax('/sentiments/average', {
       success: function(firstSentiment) {
-        self.setState({sentiment: firstSentiment});
+        console.log(firstSentiment);
+        self.setState({sentiment: firstSentiment.candidates});
       },
       error: function() {
 
@@ -177,7 +181,7 @@ var TweetListContainer = React.createClass({
   },
 
   _onUpdateSentiment: function(newSentiment) {
-    this.setState({sentiment: newSentiment});
+    this.setState({sentiment: newSentiment.candidates});
   },
 
   render: function() {
@@ -203,12 +207,12 @@ var TweetListContainer = React.createClass({
       return (
         <div>
           <div style={leftStyle}>
-            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} />
-            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} />
+            <TweetList title={'Bernie Sanders'} data={this.state.tweetStore['bernie sanders']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['bernie sanders'])} />
+            <TweetList title={'Hillary Clinton'} data={this.state.tweetStore['hillary clinton']} party={'democratic'} sentiment={formatSentiment(this.state.sentiment['hillary clinton'])} />
           </div>
           <div style={rightStyle}>
-            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} />
-            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} />
+            <TweetList title={'Marco Rubio'} data={this.state.tweetStore['marco rubio']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['marco rubio'])}/>
+            <TweetList title={'Donald Trump'} data={this.state.tweetStore['donald trump']} party={'republican'} sentiment={formatSentiment(this.state.sentiment['donald trump'])}/>
           </div>
         </div>
       );
