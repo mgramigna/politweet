@@ -15,8 +15,8 @@ socket.on('tweet', function(tweet) {
   tweetListContainer._onUpdateTweets(tweetStore)
 
 });
-socket.on('newSentiment', function(data) {
-  tweetListContainer._onUpdateSentiment(data);
+socket.on('sentimentUpdate', function(data) {
+  tweetListContainer._onUpdateSentiment(data.candidates);
 });
 
 var formatSentiment = function(raw) {
@@ -162,9 +162,9 @@ var TweetListContainer = React.createClass({
 
       }
     });
-    $.ajax('/sentiments', {
+    $.ajax('/sentiments/average', {
       success: function(firstSentiment) {
-        self.setState({sentiment: firstSentiment[0].data.candidates});
+        self.setState({sentiment: firstSentiment.candidates});
       },
       error: function() {
 
@@ -179,8 +179,9 @@ var TweetListContainer = React.createClass({
       this.setState({tweetStore: tweetStore});
   },
 
-  _onUpdateSentiment: function(newSentiment) {
-    this.setState({sentiment: newSentiment.data.candidates});
+  _onUpdateSentiment: function(sentimentUpdate) {
+    console.log(sentimentUpdate);
+    this.setState({sentiment: sentimentUpdate});
   },
 
   render: function() {
