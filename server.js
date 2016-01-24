@@ -62,8 +62,8 @@ app.get('/candidates', function(req, res){
 });
 
 app.get('/count/:candidate', function(req, res){
-  db.getAllTweetsByCandidateSince(req.params.candidate, new Date(0), function(tweets){
-    res.send(tweets.length);
+  db.getTweetsByCandidateSince(req.params.candidate, new Date(0), function(tweets){
+    res.json(tweets.length);
   });
 });
 
@@ -134,9 +134,21 @@ db.getAllSentimentsSince(initialD, function(sentiments){
 });
 
 //Initialize data for each state's sentiment
-// var dat = new Date();
-// dat.setHours(dat.getHours() - 1);
-
+var dat = new Date();
+dat.setHours(dat.getHours() - 1);
+db.getAllStateSentimentsSince(dat, function(sentiments){
+  sentiments.forEach(function(sentiment){
+    var sentimentCount = 1;
+    for(var state in currentState){
+      for(var key in sentiment.data[state].candidates){
+        currentState[states].candidates[key] = averageAlgorithm(sentiment.data[state].candidates[key], currentState[state].candidates[key], sentimentCount);
+      }
+      currentState[state].party.dem = averageAlgorithm(sentiment.data[state].party.dem, currentState[state].party.dem, sentimentCount);
+      currentState[state].party.rep = averageAlgorithm(sentiment.data[state].party.rep, currentState[state].party.rep, sentimentCount);
+      sentimentCount++;
+    }
+  });
+});
 
 //Cron Job Changing the Sentiments every 5 minutes
 var job = new CronJob('0 */1 * * * *',
