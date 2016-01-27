@@ -1,0 +1,86 @@
+WebSocket Events
+  "tweet"
+    {
+      "party": "republican",
+      "candidate": "donald trump",
+      "tweet": {
+        //Twitter Tweet Object
+      }
+  
+  "update"
+    {
+      "snapshot": {
+        "sentiment": {
+          "party": {
+            "dem": 0.0,
+            "rep": 0.0
+          },
+          "candidate": {
+            "donald trump": 0.0,
+            "hillary clinton" 0.0
+          }
+        }
+        "tweetCount": {
+          "party": {
+            "dem": 0,
+            "rep": 0
+          },
+          "candidate": {
+            "donald trump": 0,
+            "hillary clinton": 0
+          }
+        },
+        "date": //Date Object
+      },
+      "average":{
+        "sentiment": {
+          "party": {
+            "dem": 0.0,
+            "rep": 0.0
+          },
+          "candidate": {
+            "donald trump": 0.0,
+            "hillary clinton" 0.0
+          }
+        }
+        "tweetCount": {
+          "party": {
+            "dem": 0.0,
+            "rep": 0.0
+          },
+          "candidate": {
+            "donald trump": 0.0,
+            "hillary clinton": 0.0
+          }
+        }
+      }
+    }
+    
+REST API
+  "/init"
+    {
+      "tweets": {
+        "donald trump": [
+          {
+            //Tweet Object
+          }
+        ],
+        "hillary clinton": [
+          {
+            //Tweet Object
+          }
+        ]
+      },
+      "history": [
+        {
+          "snapshot": {
+            //Snapshot Object from above
+          },
+          "date": //Date Object
+        }
+      ],
+      "update": {
+        //Update Object from above
+      }
+    }
+  
